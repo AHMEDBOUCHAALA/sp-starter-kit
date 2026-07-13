@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deutsch von Null — Apprendre l'allemand</title>
+<style>
+:root{
+  --bg:#f4f4f1; --card:#ffffff; --ink:#17181c; --muted:#63666e;
+  --accent:#c92a23; --accent-ink:#ffffff; --accent-soft:#fae5e3;
+  --gold:#a97706; --ok:#15803d; --ok-soft:#dcfce7; --bad:#b91c1c; --bad-soft:#fee2e2;
+  --line:#e2e1dc; --shadow:0 1px 2px rgba(23,24,28,.07), 0 4px 12px rgba(23,24,28,.05);
+  --radius:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#141519; --card:#1d1f25; --ink:#e9e8e4; --muted:#9a9da6;
+    --accent:#e8554d; --accent-ink:#1c0605; --accent-soft:#3a1613;
+    --gold:#deb015; --ok:#4ade80; --ok-soft:#122b1a; --bad:#f87171; --bad-soft:#3a1414;
+    --line:#2d3038; --shadow:0 1px 3px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="light"]{
+  --bg:#f4f4f1; --card:#ffffff; --ink:#17181c; --muted:#63666e;
+  --accent:#c92a23; --accent-ink:#ffffff; --accent-soft:#fae5e3;
+  --gold:#a97706; --ok:#15803d; --ok-soft:#dcfce7; --bad:#b91c1c; --bad-soft:#fee2e2;
+  --line:#e2e1dc; --shadow:0 1px 2px rgba(23,24,28,.07), 0 4px 12px rgba(23,24,28,.05);
+}
+:root[data-theme="dark"]{
+  --bg:#141519; --card:#1d1f25; --ink:#e9e8e4; --muted:#9a9da6;
+  --accent:#e8554d; --accent-ink:#1c0605; --accent-soft:#3a1613;
+  --gold:#deb015; --ok:#4ade80; --ok-soft:#122b1a; --bad:#f87171; --bad-soft:#3a1414;
+  --line:#2d3038; --shadow:0 1px 3px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  line-height:1.5; min-height:100vh; padding-bottom:76px;
+}
+.wrap{max-width:640px; margin:0 auto; padding:16px}
+header.app{
+  display:flex; align-items:center; gap:10px; padding:14px 16px 4px;
+  max-width:640px; margin:0 auto;
+}
+header.app h1{font-size:1.05rem; margin:0; flex:1; font-weight:800; letter-spacing:-.01em}
+header.app .flag{width:26px;height:18px;border-radius:3px;overflow:hidden;display:inline-flex;flex-direction:column;box-shadow:0 0 0 1px var(--line); flex-shrink:0}
+header.app .flag span{flex:1}
+.f-black{background:#000}.f-red{background:#dd0000}.f-gold{background:#ffcc00}
+.pill{
+  display:inline-flex; align-items:center; gap:5px; padding:3px 10px;
+  border-radius:999px; background:var(--card); border:1px solid var(--line);
+  font-size:.82rem; font-weight:600;
+}
+nav.tabs{
+  position:fixed; bottom:0; left:0; right:0; z-index:50;
+  background:var(--card); border-top:1px solid var(--line);
+  display:flex; justify-content:center; gap:2px; padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+}
+nav.tabs button{
+  flex:1; max-width:150px; border:0; background:none; color:var(--muted);
+  font:inherit; font-size:.72rem; font-weight:600; cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; gap:2px; padding:4px 2px;
+  border-radius:10px; position:relative;
+}
+nav.tabs button .ico{font-size:1.25rem}
+nav.tabs button.active{color:var(--accent)}
+nav.tabs button .badge{
+  position:absolute; top:-2px; right:calc(50% - 24px);
+  background:var(--accent); color:var(--accent-ink); font-size:.65rem;
+  border-radius:999px; padding:0 6px; min-width:17px; height:17px; line-height:17px;
+}
+.card{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  box-shadow:var(--shadow); padding:16px; margin-bottom:12px;
+}
+h2{font-size:1.15rem; margin:4px 0 10px}
+h3{font-size:.95rem; margin:0 0 6px}
+p.muted, span.muted{color:var(--muted); font-size:.88rem; margin:.2rem 0}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  border:0; border-radius:12px; padding:12px 18px; font:inherit; font-weight:700;
+  cursor:pointer; background:var(--accent); color:var(--accent-ink);
+  transition:transform .06s ease, filter .15s;
+}
+.btn:hover{filter:brightness(1.06)}
+.btn:active{transform:scale(.98)}
+.btn.secondary{background:var(--card); color:var(--ink); border:1.5px solid var(--line)}
+.btn.small{padding:8px 12px; font-size:.85rem; border-radius:10px}
+.btn.block{display:flex; width:100%}
+.btn:disabled{opacity:.45; cursor:default}
+.statgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:12px}
+.stat{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  padding:12px 8px; text-align:center; box-shadow:var(--shadow);
+}
+.stat .v{font-size:1.35rem; font-weight:800}
+.stat .l{font-size:.72rem; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.04em}
+.lesson-row{
+  display:flex; align-items:center; gap:12px; padding:13px 14px;
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  margin-bottom:10px; cursor:pointer; box-shadow:var(--shadow);
+}
+.lesson-row:hover{border-color:var(--accent)}
+.lesson-row .ico{font-size:1.6rem}
+.lesson-row .meta{flex:1; min-width:0}
+.lesson-row .meta .t{font-weight:700}
+.lesson-row .meta .s{font-size:.8rem; color:var(--muted)}
+.lesson-row .done{color:var(--ok); font-weight:700; font-size:.85rem; white-space:nowrap}
+.progressbar{height:6px; border-radius:99px; background:var(--line); overflow:hidden; margin-top:6px}
+.progressbar > div{height:100%; background:var(--accent); border-radius:99px; transition:width .3s}
+.expr{
+  display:flex; align-items:center; gap:10px; padding:10px 12px;
+  border-bottom:1px solid var(--line);
+}
+.expr:last-child{border-bottom:0}
+.expr .de{font-weight:700}
+.expr .ph{font-size:.78rem; color:var(--gold); font-weight:600}
+.expr .fr{font-size:.85rem; color:var(--muted)}
+.expr .txt{flex:1; min-width:0}
+.speak{
+  border:1px solid var(--line); background:var(--bg); border-radius:99px;
+  width:36px; height:36px; font-size:1rem; cursor:pointer; flex-shrink:0;
+}
+.speak:hover{border-color:var(--accent)}
+.flashcard{
+  min-height:250px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding:26px 18px; position:relative;
+}
+.flashcard .dir{position:absolute; top:12px; left:14px; font-size:.72rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.05em}
+.flashcard .word{font-size:1.7rem; font-weight:800; margin:6px 0}
+.flashcard .ph{color:var(--gold); font-weight:600}
+.flashcard .answer{margin-top:14px; padding-top:14px; border-top:1px dashed var(--line); width:100%}
+.flashcard .answer .word{color:var(--accent)}
+.gradebar{display:grid; grid-template-columns:repeat(4,1fr); gap:8px}
+.gradebar button{
+  border:0; border-radius:12px; padding:11px 4px; font:inherit; font-weight:700; font-size:.85rem;
+  cursor:pointer; color:#fff;
+}
+.gradebar .g-again{background:#b91c1c}
+.gradebar .g-hard{background:#c2740c}
+.gradebar .g-good{background:#15803d}
+.gradebar .g-easy{background:#1d4ed8}
+.gradebar button small{display:block; font-weight:500; font-size:.68rem; opacity:.85}
+.choices{display:flex; flex-direction:column; gap:9px; margin-top:14px}
+.choices button{
+  border:1.5px solid var(--line); background:var(--card); color:var(--ink);
+  border-radius:12px; padding:12px 14px; font:inherit; font-weight:600; cursor:pointer; text-align:left;
+}
+.choices button:hover{border-color:var(--accent)}
+.choices button.correct{background:var(--ok-soft); border-color:var(--ok); color:var(--ok)}
+.choices button.wrong{background:var(--bad-soft); border-color:var(--bad); color:var(--bad)}
+input.answer{
+  width:100%; padding:12px 14px; font:inherit; font-size:1.05rem;
+  border:1.5px solid var(--line); border-radius:12px; background:var(--bg); color:var(--ink);
+  margin-top:14px;
+}
+input.answer:focus{outline:none; border-color:var(--accent)}
+.feedback{margin-top:12px; padding:12px 14px; border-radius:12px; font-weight:600}
+.feedback.ok{background:var(--ok-soft); color:var(--ok)}
+.feedback.bad{background:var(--bad-soft); color:var(--bad)}
+.umlauts{display:flex; gap:8px; margin-top:10px}
+.umlauts button{
+  border:1px solid var(--line); background:var(--card); color:var(--ink);
+  border-radius:10px; padding:6px 14px; font:inherit; font-size:1rem; cursor:pointer;
+}
+.topline{display:flex; align-items:center; gap:10px; margin-bottom:12px}
+.topline .back{
+  border:1px solid var(--line); background:var(--card); color:var(--ink);
+  border-radius:10px; padding:7px 12px; font:inherit; font-weight:700; cursor:pointer;
+}
+.topline .count{margin-left:auto; font-size:.85rem; color:var(--muted); font-weight:600}
+.bigscore{text-align:center; padding:30px 10px}
+.bigscore .emoji{font-size:3rem}
+.bigscore .score{font-size:2rem; font-weight:800; margin:8px 0}
+.mode-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.mode-card{
+  background:var(--card); border:1.5px solid var(--line); border-radius:var(--radius);
+  padding:18px 14px; text-align:center; cursor:pointer; box-shadow:var(--shadow);
+}
+.mode-card:hover{border-color:var(--accent)}
+.mode-card .ico{font-size:2rem}
+.mode-card .t{font-weight:700; margin-top:6px}
+.mode-card .s{font-size:.78rem; color:var(--muted)}
+.hidden{display:none !important}
+.center{text-align:center}
+.fade-in{animation:fade .25s ease}
+@keyframes fade{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
+</style>
+</head>
+<body>
+<header class="app">
+  <span class="flag"><span class="f-black"></span><span class="f-red"></span><span class="f-gold"></span></span>
+  <h1>Deutsch von Null</h1>
+  <span class="pill">🔥 <span id="hdr-streak">0</span></span>
+  <span class="pill">⭐ <span id="hdr-xp">0</span> XP</span>
+</header>
+
+<main class="wrap" id="view"></main>
+
+<nav class="tabs">
+  <button data-tab="home"><span class="ico">🏠</span>Accueil</button>
+  <button data-tab="lessons"><span class="ico">📚</span>Leçons</button>
+  <button data-tab="review"><span class="ico">🔁</span>Révision<span class="badge hidden" id="due-badge">0</span></button>
+  <button data-tab="practice"><span class="ico">✏️</span>Exercices</button>
+</nav>
+
+<script>
+"use strict";
+
+/* ================= DONNÉES : 10 leçons, ~100 expressions les plus utilisées ================= */
+const LESSONS = [
+{id:"salut", icon:"👋", title:"Salutations", desc:"Dire bonjour et au revoir", items:[
+ {de:"Hallo", fr:"Salut / Bonjour", ph:"ha-lo"},
+ {de:"Guten Morgen", fr:"Bonjour (le matin)", ph:"gou-tenne mor-guenne"},
+ {de:"Guten Tag", fr:"Bonjour (la journée)", ph:"gou-tenne tak"},
+ {de:"Guten Abend", fr:"Bonsoir", ph:"gou-tenne a-bennte"},
+ {de:"Gute Nacht", fr:"Bonne nuit", ph:"gou-teu nar't"},
+ {de:"Tschüss", fr:"Salut / Au revoir (familier)", ph:"tchuss"},
+ {de:"Auf Wiedersehen", fr:"Au revoir (formel)", ph:"aouf vi-deur-zé-eune"},
+ {de:"Bis später", fr:"À plus tard", ph:"biss chpè-teur"},
+ {de:"Bis morgen", fr:"À demain", ph:"biss mor-guenne"},
+ {de:"Wie geht's?", fr:"Comment ça va ?", ph:"vi guéts"},
+]},
+{id:"politesse", icon:"🙏", title:"Politesse", desc:"Merci, pardon, s'il vous plaît", items:[
+ {de:"Bitte", fr:"S'il vous plaît / De rien", ph:"bi-teu"},
+ {de:"Danke", fr:"Merci", ph:"dann-keu"},
+ {de:"Danke schön", fr:"Merci beaucoup", ph:"dann-keu cheune"},
+ {de:"Vielen Dank", fr:"Merci beaucoup (formel)", ph:"fi-lenne dannk"},
+ {de:"Entschuldigung", fr:"Excusez-moi / Pardon", ph:"ènn-choul-di-goungue"},
+ {de:"Es tut mir leid", fr:"Je suis désolé(e)", ph:"èss tout mir laïte"},
+ {de:"Kein Problem", fr:"Pas de problème", ph:"kaïne pro-blème"},
+ {de:"Gern geschehen", fr:"Avec plaisir / Je vous en prie", ph:"guèrne gue-ché-eune"},
+ {de:"Ja", fr:"Oui", ph:"ya"},
+ {de:"Nein", fr:"Non", ph:"naïne"},
+]},
+{id:"presentation", icon:"🙋", title:"Se présenter", desc:"Nom, origine, âge", items:[
+ {de:"Ich heiße …", fr:"Je m'appelle …", ph:"ich haï-sseu"},
+ {de:"Wie heißt du?", fr:"Comment tu t'appelles ?", ph:"vi haïsst dou"},
+ {de:"Wie heißen Sie?", fr:"Comment vous appelez-vous ?", ph:"vi haï-ssenne zi"},
+ {de:"Ich komme aus Frankreich", fr:"Je viens de France", ph:"ich ko-meu aouss frannk-raïch"},
+ {de:"Woher kommst du?", fr:"D'où viens-tu ?", ph:"vo-hère kommst dou"},
+ {de:"Ich wohne in Berlin", fr:"J'habite à Berlin", ph:"ich vo-neu inne bèr-line"},
+ {de:"Freut mich", fr:"Enchanté(e)", ph:"froïte mich"},
+ {de:"Ich bin dreißig Jahre alt", fr:"J'ai trente ans", ph:"ich bine draï-ssich ya-reu alte"},
+ {de:"Und du?", fr:"Et toi ?", ph:"ounte dou"},
+ {de:"Ich spreche ein bisschen Deutsch", fr:"Je parle un peu allemand", ph:"ich chprè-cheu aïne biss-cheune doïtch"},
+]},
+{id:"questions", icon:"❓", title:"Questions essentielles", desc:"Quoi, où, quand, combien…", items:[
+ {de:"Was?", fr:"Quoi ?", ph:"vass"},
+ {de:"Wer?", fr:"Qui ?", ph:"vère"},
+ {de:"Wo?", fr:"Où ?", ph:"vo"},
+ {de:"Wann?", fr:"Quand ?", ph:"vanne"},
+ {de:"Warum?", fr:"Pourquoi ?", ph:"va-roumm"},
+ {de:"Wie?", fr:"Comment ?", ph:"vi"},
+ {de:"Wie viel kostet das?", fr:"Combien ça coûte ?", ph:"vi fil koss-tète dass"},
+ {de:"Wo ist die Toilette?", fr:"Où sont les toilettes ?", ph:"vo isst di toa-lè-teu"},
+ {de:"Wie spät ist es?", fr:"Quelle heure est-il ?", ph:"vi chpète isst èss"},
+ {de:"Können Sie mir helfen?", fr:"Pouvez-vous m'aider ?", ph:"keu-nenne zi mir hèl-fenne"},
+]},
+{id:"survie", icon:"🗣️", title:"Communication", desc:"Comprendre et se faire comprendre", items:[
+ {de:"Ich verstehe nicht", fr:"Je ne comprends pas", ph:"ich fèr-chté-eu nicht"},
+ {de:"Ich verstehe", fr:"Je comprends", ph:"ich fèr-chté-eu"},
+ {de:"Sprechen Sie Französisch?", fr:"Parlez-vous français ?", ph:"chprè-chenne zi frann-tseu-zich"},
+ {de:"Sprechen Sie Englisch?", fr:"Parlez-vous anglais ?", ph:"chprè-chenne zi ènn-glich"},
+ {de:"Können Sie das wiederholen?", fr:"Pouvez-vous répéter ?", ph:"keu-nenne zi dass vi-deur-ho-lenne"},
+ {de:"Langsamer, bitte", fr:"Plus lentement, s'il vous plaît", ph:"lanng-za-meur bi-teu"},
+ {de:"Was bedeutet das?", fr:"Qu'est-ce que ça veut dire ?", ph:"vass beu-doï-tète dass"},
+ {de:"Wie sagt man das auf Deutsch?", fr:"Comment dit-on ça en allemand ?", ph:"vi zakt manne dass aouf doïtch"},
+ {de:"Ich weiß nicht", fr:"Je ne sais pas", ph:"ich vaïss nicht"},
+ {de:"Ich spreche kein Deutsch", fr:"Je ne parle pas allemand", ph:"ich chprè-cheu kaïne doïtch"},
+]},
+{id:"nombres", icon:"🔢", title:"Nombres 0 à 10", desc:"Compter en allemand", items:[
+ {de:"null", fr:"zéro", ph:"noul"},
+ {de:"eins", fr:"un", ph:"aïnnss"},
+ {de:"zwei", fr:"deux", ph:"tsvaï"},
+ {de:"drei", fr:"trois", ph:"draï"},
+ {de:"vier", fr:"quatre", ph:"fir"},
+ {de:"fünf", fr:"cinq", ph:"funnf"},
+ {de:"sechs", fr:"six", ph:"zèkss"},
+ {de:"sieben", fr:"sept", ph:"zi-benne"},
+ {de:"acht", fr:"huit", ph:"ar't"},
+ {de:"neun", fr:"neuf", ph:"noïne"},
+ {de:"zehn", fr:"dix", ph:"tséne"},
+]},
+{id:"restaurant", icon:"🍽️", title:"Au restaurant", desc:"Commander et payer", items:[
+ {de:"Die Speisekarte, bitte", fr:"La carte, s'il vous plaît", ph:"di chpaï-zeu-kar-teu bi-teu"},
+ {de:"Ich möchte …", fr:"Je voudrais …", ph:"ich meuch-teu"},
+ {de:"Ein Bier, bitte", fr:"Une bière, s'il vous plaît", ph:"aïne bir bi-teu"},
+ {de:"Ein Wasser, bitte", fr:"Une eau, s'il vous plaît", ph:"aïne va-sseur bi-teu"},
+ {de:"Einen Kaffee, bitte", fr:"Un café, s'il vous plaît", ph:"aï-nenne ka-fé bi-teu"},
+ {de:"Die Rechnung, bitte", fr:"L'addition, s'il vous plaît", ph:"di rèch-noungue bi-teu"},
+ {de:"Guten Appetit", fr:"Bon appétit", ph:"gou-tenne a-pé-tite"},
+ {de:"Prost!", fr:"Santé ! (trinquer)", ph:"prosst"},
+ {de:"Es schmeckt gut", fr:"C'est bon (au goût)", ph:"èss chmèkt goute"},
+ {de:"Ich habe Hunger", fr:"J'ai faim", ph:"ich ha-beu houngue-eur"},
+]},
+{id:"transport", icon:"🚆", title:"Se déplacer", desc:"Directions et transports", items:[
+ {de:"Wo ist der Bahnhof?", fr:"Où est la gare ?", ph:"vo isst dère bane-hof"},
+ {de:"links", fr:"à gauche", ph:"linnkss"},
+ {de:"rechts", fr:"à droite", ph:"rèchts"},
+ {de:"geradeaus", fr:"tout droit", ph:"gue-ra-deu-aouss"},
+ {de:"der Flughafen", fr:"l'aéroport", ph:"dère flouk-ha-fenne"},
+ {de:"Eine Fahrkarte nach Berlin, bitte", fr:"Un billet pour Berlin, s'il vous plaît", ph:"aï-neu far-kar-teu nar' bèr-line bi-teu"},
+ {de:"Wann fährt der Zug ab?", fr:"Quand part le train ?", ph:"vanne fèrte dère tsouk ap"},
+ {de:"die Haltestelle", fr:"l'arrêt (bus, tram)", ph:"di hal-teu-chtè-leu"},
+ {de:"Wie komme ich zum Hotel?", fr:"Comment aller à l'hôtel ?", ph:"vi ko-meu ich tsoum ho-tèl"},
+ {de:"Ist es weit?", fr:"C'est loin ?", ph:"isst èss vaïte"},
+]},
+{id:"urgence", icon:"🆘", title:"Urgences & santé", desc:"Demander de l'aide", items:[
+ {de:"Hilfe!", fr:"Au secours !", ph:"hil-feu"},
+ {de:"Rufen Sie einen Arzt!", fr:"Appelez un médecin !", ph:"rou-fenne zi aï-nenne artst"},
+ {de:"Ich bin krank", fr:"Je suis malade", ph:"ich bine krannk"},
+ {de:"Ich habe mich verlaufen", fr:"Je me suis perdu(e)", ph:"ich ha-beu mich fèr-laou-fenne"},
+ {de:"die Polizei", fr:"la police", ph:"di po-li-tsaï"},
+ {de:"das Krankenhaus", fr:"l'hôpital", ph:"dass krann-kenne-haouss"},
+ {de:"die Apotheke", fr:"la pharmacie", ph:"di a-po-té-keu"},
+ {de:"Es ist ein Notfall", fr:"C'est une urgence", ph:"èss isst aïne note-fal"},
+ {de:"Vorsicht!", fr:"Attention !", ph:"for-zicht"},
+ {de:"Mir geht es nicht gut", fr:"Je ne me sens pas bien", ph:"mir guéte èss nicht goute"},
+]},
+{id:"quotidien", icon:"💬", title:"Au quotidien", desc:"Petites phrases de tous les jours", items:[
+ {de:"Natürlich", fr:"Bien sûr", ph:"na-tur-lich"},
+ {de:"Vielleicht", fr:"Peut-être", ph:"fi-laïcht"},
+ {de:"Genau", fr:"Exactement", ph:"gue-naou"},
+ {de:"Alles klar", fr:"D'accord / C'est clair", ph:"a-less klar"},
+ {de:"Einen Moment, bitte", fr:"Un instant, s'il vous plaît", ph:"aï-nenne mo-mènnte bi-teu"},
+ {de:"Super!", fr:"Super !", ph:"zou-peur"},
+ {de:"Viel Glück!", fr:"Bonne chance !", ph:"fil gluk"},
+ {de:"Herzlichen Glückwunsch!", fr:"Félicitations !", ph:"hèrts-li-chenne gluk-vounnch"},
+ {de:"Mach's gut!", fr:"Porte-toi bien ! / Salut !", ph:"marss goute"},
+ {de:"Ich liebe dich", fr:"Je t'aime", ph:"ich li-beu dich"},
+]},
+];
+
+const ALL_ITEMS = {};
+LESSONS.forEach(l => l.items.forEach((it,i) => { ALL_ITEMS[l.id+"-"+i] = {...it, lesson:l.id}; }));
+
+/* ================= ÉTAT & PERSISTANCE ================= */
+const STORE_KEY = "deutsch-von-null-v1";
+const DAY = 86400000;
+let state = load();
+function load(){
+  try{
+    const s = JSON.parse(localStorage.getItem(STORE_KEY));
+    if(s && s.cards) return s;
+  }catch(e){}
+  return {cards:{}, xp:0, streak:0, lastActive:null};
+}
+function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+function todayStr(){ return new Date().toISOString().slice(0,10); }
+function touchStreak(){
+  const t = todayStr();
+  if(state.lastActive === t) return;
+  const y = new Date(Date.now()-DAY).toISOString().slice(0,10);
+  state.streak = (state.lastActive === y) ? state.streak+1 : 1;
+  state.lastActive = t;
+}
+function addXP(n){ touchStreak(); state.xp += n; save(); renderHeader(); }
+
+/* ================= SRS (SM-2 simplifié) ================= */
+function newCard(){ return {reps:0, iv:0, ease:2.5, due:Date.now()}; }
+function grade(card, g){ // g: 0 encore, 1 difficile, 2 bien, 3 facile
+  if(g === 0){
+    card.ease = Math.max(1.3, card.ease - 0.2);
+    card.iv = 0; card.reps = 0;
+    card.due = Date.now() + 10*60000; // revoir dans 10 min
+  }else{
+    if(g === 1){ card.ease = Math.max(1.3, card.ease - 0.15); card.iv = Math.max(1, Math.round(card.iv*1.2)) || 1; }
+    else if(g === 2){ card.iv = card.reps === 0 ? 1 : card.reps === 1 ? 3 : Math.round(card.iv*card.ease); }
+    else { card.ease += 0.15; card.iv = card.reps === 0 ? 2 : Math.round(card.iv*card.ease*1.3); }
+    card.reps++;
+    card.due = Date.now() + card.iv*DAY;
+  }
+}
+function dueCards(){
+  const now = Date.now();
+  return Object.entries(state.cards).filter(([,c]) => c.due <= now).map(([id]) => id);
+}
+function learnedCount(lessonId){
+  return Object.keys(state.cards).filter(id => ALL_ITEMS[id] && ALL_ITEMS[id].lesson === lessonId).length;
+}
+
+/* ================= AUDIO (synthèse vocale allemande) ================= */
+let deVoice = null;
+function pickVoice(){
+  const vs = speechSynthesis.getVoices().filter(v => v.lang.startsWith("de"));
+  deVoice = vs.find(v => v.lang === "de-DE") || vs[0] || null;
+}
+if("speechSynthesis" in window){
+  pickVoice();
+  speechSynthesis.onvoiceschanged = pickVoice;
+}
+function speak(text){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text.replace(/…/g,""));
+  u.lang = "de-DE"; u.rate = 0.85;
+  if(deVoice) u.voice = deVoice;
+  speechSynthesis.speak(u);
+}
+
+/* ================= OUTILS ================= */
+function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function shuffle(a){ a = a.slice(); for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; } return a; }
+function normDE(s){
+  return s.toLowerCase()
+    .replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss")
+    .replace(/['’]/g,"")
+    .replace(/[?!.,;:«»"()…-]/g," ").replace(/\s+/g," ").trim();
+}
+const $view = document.getElementById("view");
+function render(html){ $view.innerHTML = html; $view.className = "wrap fade-in"; }
+function renderHeader(){
+  document.getElementById("hdr-streak").textContent = state.streak;
+  document.getElementById("hdr-xp").textContent = state.xp;
+  const due = dueCards().length;
+  const badge = document.getElementById("due-badge");
+  badge.textContent = due;
+  badge.classList.toggle("hidden", due === 0);
+}
+
+/* ================= NAVIGATION ================= */
+let currentTab = "home";
+document.querySelectorAll("nav.tabs button").forEach(b => {
+  b.addEventListener("click", () => showTab(b.dataset.tab));
+});
+function showTab(tab){
+  currentTab = tab;
+  document.querySelectorAll("nav.tabs button").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+  renderHeader();
+  ({home:renderHome, lessons:renderLessons, review:startReview, practice:renderPractice})[tab]();
+}
+
+/* ================= ACCUEIL ================= */
+function nextLesson(){
+  return LESSONS.find(l => learnedCount(l.id) < l.items.length) || null;
+}
+function renderHome(){
+  const learned = Object.keys(state.cards).length;
+  const total = Object.keys(ALL_ITEMS).length;
+  const due = dueCards().length;
+  const nl = nextLesson();
+  render(`
+    <div class="statgrid">
+      <div class="stat"><div class="v">🔥 ${state.streak}</div><div class="l">jours de suite</div></div>
+      <div class="stat"><div class="v">${learned}<span class="muted">/${total}</span></div><div class="l">expressions</div></div>
+      <div class="stat"><div class="v">⭐ ${state.xp}</div><div class="l">points XP</div></div>
+    </div>
+    <div class="card">
+      <h2>Willkommen ! 👋</h2>
+      <p class="muted">Apprends l'allemand de zéro avec les expressions les plus utilisées, puis retiens-les grâce à la répétition espacée.</p>
+      ${due > 0
+        ? `<button class="btn block" onclick="showTab('review')">🔁 Réviser maintenant (${due} carte${due>1?"s":""})</button>`
+        : `<p class="muted">✅ Aucune carte à réviser pour le moment.</p>`}
+    </div>
+    ${nl ? `
+    <div class="card">
+      <h3>Prochaine leçon recommandée</h3>
+      <div class="lesson-row" style="box-shadow:none;margin:8px 0 0" onclick="openLesson('${nl.id}')">
+        <span class="ico">${nl.icon}</span>
+        <div class="meta"><div class="t">${nl.title}</div><div class="s">${nl.desc}</div></div>
+        <span class="pill">${learnedCount(nl.id)}/${nl.items.length}</span>
+      </div>
+    </div>` : `
+    <div class="card center">
+      <h3>🎉 Toutes les leçons sont apprises !</h3>
+      <p class="muted">Continue les révisions et les exercices pour tout mémoriser durablement.</p>
+    </div>`}
+    <div class="card">
+      <h3>Comment ça marche ?</h3>
+      <p class="muted">1️⃣ <b>Leçons</b> : découvre les expressions avec leur prononciation.<br>
+      2️⃣ <b>Révision</b> : les cartes reviennent au bon moment (10 min → 1 j → 3 j → …) selon tes réponses.<br>
+      3️⃣ <b>Exercices</b> : QCM et écriture pour ancrer ce que tu as appris.</p>
+    </div>
+  `);
+}
+
+/* ================= LEÇONS ================= */
+function renderLessons(){
+  render(`
+    <h2>📚 Leçons</h2>
+    <p class="muted">Dans l'ordre recommandé, du plus essentiel au plus spécifique.</p>
+    ${LESSONS.map(l => {
+      const n = learnedCount(l.id), t = l.items.length;
+      return `
+      <div class="lesson-row" onclick="openLesson('${l.id}')">
+        <span class="ico">${l.icon}</span>
+        <div class="meta">
+          <div class="t">${l.title}</div>
+          <div class="s">${l.desc} · ${t} expressions</div>
+          <div class="progressbar"><div style="width:${Math.round(n/t*100)}%"></div></div>
+        </div>
+        ${n === t ? `<span class="done">✓ Terminé</span>` : `<span class="pill">${n}/${t}</span>`}
+      </div>`;
+    }).join("")}
+  `);
+}
+function openLesson(id){
+  const l = LESSONS.find(x => x.id === id);
+  const n = learnedCount(id), t = l.items.length;
+  render(`
+    <div class="topline">
+      <button class="back" onclick="renderLessons()">← Leçons</button>
+      <span class="count">${n}/${t} apprises</span>
+    </div>
+    <div class="card">
+      <h2>${l.icon} ${l.title}</h2>
+      <p class="muted">${l.desc}. Appuie sur 🔊 pour écouter la prononciation.</p>
+      <button class="btn block" onclick="startLearn('${id}')">${n === 0 ? "▶️ Commencer la leçon" : n < t ? "▶️ Continuer la leçon" : "🔁 Revoir la leçon"}</button>
+    </div>
+    <div class="card" style="padding:4px 4px">
+      ${l.items.map((it,i) => `
+      <div class="expr">
+        <button class="speak" onclick="speak('${esc(it.de).replace(/'/g,"\\'")}')">🔊</button>
+        <div class="txt">
+          <div class="de">${esc(it.de)} ${state.cards[id+"-"+i] ? "✓" : ""}</div>
+          <div class="ph">[${esc(it.ph)}]</div>
+          <div class="fr">${esc(it.fr)}</div>
+        </div>
+      </div>`).join("")}
+    </div>
+  `);
+}
+
+/* ---- flux d'apprentissage d'une leçon ---- */
+let learn = null;
+function startLearn(id){
+  const l = LESSONS.find(x => x.id === id);
+  const fresh = l.items.map((_,i) => id+"-"+i).filter(cid => !state.cards[cid]);
+  const queue = fresh.length ? fresh : l.items.map((_,i) => id+"-"+i);
+  learn = {lesson:id, queue, i:0, isNew:fresh.length > 0};
+  renderLearnCard();
+}
+function renderLearnCard(){
+  const cid = learn.queue[learn.i];
+  const it = ALL_ITEMS[cid];
+  render(`
+    <div class="topline">
+      <button class="back" onclick="openLesson('${learn.lesson}')">← Quitter</button>
+      <span class="count">${learn.i+1} / ${learn.queue.length}</span>
+    </div>
+    <div class="card flashcard">
+      <div class="dir">Nouvelle expression</div>
+      <div class="word">${esc(it.de)}</div>
+      <div class="ph">[${esc(it.ph)}]</div>
+      <button class="speak" style="margin:10px 0" onclick="speak('${esc(it.de).replace(/'/g,"\\'")}')">🔊</button>
+      <div class="answer"><div class="word" style="font-size:1.2rem">${esc(it.fr)}</div></div>
+    </div>
+    <button class="btn block" onclick="learnNext()">J'ai compris → suivant</button>
+  `);
+  speak(it.de);
+}
+function learnNext(){
+  const cid = learn.queue[learn.i];
+  if(!state.cards[cid]){ state.cards[cid] = newCard(); addXP(2); }
+  learn.i++;
+  save(); renderHeader();
+  if(learn.i < learn.queue.length){ renderLearnCard(); return; }
+  const l = LESSONS.find(x => x.id === learn.lesson);
+  render(`
+    <div class="card bigscore">
+      <div class="emoji">🎉</div>
+      <h2>Leçon « ${l.title} » terminée !</h2>
+      <p class="muted">${learn.queue.length} expressions ajoutées à tes révisions. Elles reviendront au bon moment.</p>
+      <button class="btn block" style="margin-top:10px" onclick="startReview()">🔁 Réviser tout de suite</button>
+      <button class="btn secondary block" style="margin-top:8px" onclick="renderLessons()">📚 Retour aux leçons</button>
+    </div>
+  `);
+}
+
+/* ================= RÉVISION (répétition espacée) ================= */
+let review = null;
+function startReview(){
+  const due = shuffle(dueCards());
+  if(due.length === 0){
+    const next = Object.values(state.cards).map(c => c.due).sort((a,b) => a-b)[0];
+    render(`
+      <div class="card bigscore">
+        <div class="emoji">😌</div>
+        <h2>Rien à réviser !</h2>
+        <p class="muted">${Object.keys(state.cards).length === 0
+          ? "Commence par apprendre une leçon : les expressions apparaîtront ici."
+          : "Prochaine révision : " + new Date(next).toLocaleString("fr-FR",{weekday:"long", hour:"2-digit", minute:"2-digit"}) + "."}</p>
+        <button class="btn block" style="margin-top:10px" onclick="showTab('lessons')">📚 Voir les leçons</button>
+      </div>
+    `);
+    return;
+  }
+  review = {queue:due, i:0, done:0, again:0};
+  renderReviewCard();
+}
+function renderReviewCard(){
+  const cid = review.queue[review.i];
+  const card = state.cards[cid];
+  const it = ALL_ITEMS[cid];
+  // les cartes bien connues sont aussi testées dans le sens FR → DE
+  const frToDe = card.reps >= 2 && Math.random() < 0.5;
+  review.frToDe = frToDe;
+  const front = frToDe ? it.fr : it.de;
+  render(`
+    <div class="topline">
+      <button class="back" onclick="showTab('home')">← Quitter</button>
+      <span class="count">${review.done} faites · ${review.queue.length - review.i} restantes</span>
+    </div>
+    <div class="card flashcard" id="fc">
+      <div class="dir">${frToDe ? "Français → Allemand" : "Allemand → Français"}</div>
+      <div class="word">${esc(front)}</div>
+      ${frToDe ? "" : `<div class="ph">[${esc(it.ph)}]</div>
+      <button class="speak" style="margin-top:10px" onclick="event.stopPropagation();speak('${esc(it.de).replace(/'/g,"\\'")}')">🔊</button>`}
+      <div class="answer hidden" id="fc-answer">
+        <div class="word">${esc(frToDe ? it.de : it.fr)}</div>
+        ${frToDe ? `<div class="ph">[${esc(it.ph)}]</div>
+        <button class="speak" style="margin-top:8px" onclick="event.stopPropagation();speak('${esc(it.de).replace(/'/g,"\\'")}')">🔊</button>` : ""}
+      </div>
+    </div>
+    <button class="btn block" id="fc-show" onclick="showAnswer()">Afficher la réponse</button>
+    <div class="gradebar hidden" id="fc-grades">
+      <button class="g-again" onclick="gradeReview(0)">Encore<small>&lt; 10 min</small></button>
+      <button class="g-hard" onclick="gradeReview(1)">Difficile<small>${ivPreview(card,1)}</small></button>
+      <button class="g-good" onclick="gradeReview(2)">Bien<small>${ivPreview(card,2)}</small></button>
+      <button class="g-easy" onclick="gradeReview(3)">Facile<small>${ivPreview(card,3)}</small></button>
+    </div>
+  `);
+  if(!frToDe) speak(it.de);
+}
+function ivPreview(card, g){
+  const c = {...card};
+  grade(c, g);
+  return c.iv >= 1 ? c.iv + " j" : "aujourd'hui";
+}
+function showAnswer(){
+  document.getElementById("fc-answer").classList.remove("hidden");
+  document.getElementById("fc-show").classList.add("hidden");
+  document.getElementById("fc-grades").classList.remove("hidden");
+  const cid = review.queue[review.i];
+  if(review.frToDe) speak(ALL_ITEMS[cid].de);
+}
+function gradeReview(g){
+  const cid = review.queue[review.i];
+  grade(state.cards[cid], g);
+  review.done++;
+  if(g === 0){ review.queue.push(cid); review.again++; } // repasse en fin de session
+  addXP(g === 0 ? 1 : 5);
+  save();
+  review.i++;
+  if(review.i < review.queue.length){ renderReviewCard(); return; }
+  renderHeader();
+  render(`
+    <div class="card bigscore">
+      <div class="emoji">💪</div>
+      <h2>Révision terminée !</h2>
+      <div class="score">${review.done} cartes</div>
+      <p class="muted">${review.again === 0 ? "Sans faute, super !" : review.again + " carte(s) à retravailler — elles reviendront vite."}</p>
+      <button class="btn block" style="margin-top:10px" onclick="renderPractice()">✏️ Faire des exercices</button>
+      <button class="btn secondary block" style="margin-top:8px" onclick="showTab('home')">🏠 Accueil</button>
+    </div>
+  `);
+}
+
+/* ================= EXERCICES ================= */
+let ex = null;
+function renderPractice(){
+  const pool = Object.keys(state.cards);
+  render(`
+    <h2>✏️ Exercices</h2>
+    <p class="muted">Sur les ${pool.length} expressions déjà apprises. Sessions de 10 questions.</p>
+    ${pool.length < 4 ? `
+    <div class="card center">
+      <p>Il faut avoir appris au moins <b>4 expressions</b> pour débloquer les exercices.</p>
+      <button class="btn" onclick="showTab('lessons')">📚 Apprendre une leçon</button>
+    </div>` : `
+    <div class="mode-grid">
+      <div class="mode-card" onclick="startEx('qcm')">
+        <div class="ico">🔘</div><div class="t">QCM</div>
+        <div class="s">Choisis la bonne traduction</div>
+      </div>
+      <div class="mode-card" onclick="startEx('write')">
+        <div class="ico">⌨️</div><div class="t">Écriture</div>
+        <div class="s">Écris l'expression en allemand</div>
+      </div>
+    </div>`}
+  `);
+}
+function startEx(mode){
+  const pool = shuffle(Object.keys(state.cards)).slice(0,10);
+  ex = {mode, pool, i:0, score:0};
+  renderExQuestion();
+}
+function renderExQuestion(){
+  const cid = ex.pool[ex.i];
+  const it = ALL_ITEMS[cid];
+  const head = `
+    <div class="topline">
+      <button class="back" onclick="renderPractice()">← Quitter</button>
+      <span class="count">Question ${ex.i+1} / ${ex.pool.length} · Score ${ex.score}</span>
+    </div>`;
+  if(ex.mode === "qcm"){
+    const deToFr = Math.random() < 0.5;
+    const correct = deToFr ? it.fr : it.de;
+    const others = shuffle(Object.values(ALL_ITEMS).filter(o => o !== it && (deToFr ? o.fr : o.de) !== correct))
+      .slice(0,3).map(o => deToFr ? o.fr : o.de);
+    const options = shuffle([correct, ...others]);
+    ex.correct = correct;
+    render(`${head}
+      <div class="card flashcard" style="min-height:150px">
+        <div class="dir">${deToFr ? "Que veut dire…" : "Comment dit-on…"}</div>
+        <div class="word">${esc(deToFr ? it.de : it.fr)}</div>
+        ${deToFr ? `<button class="speak" style="margin-top:8px" onclick="speak('${esc(it.de).replace(/'/g,"\\'")}')">🔊</button>` : ""}
+      </div>
+      <div class="choices">
+        ${options.map(o => `<button onclick="answerQCM(this)">${esc(o)}</button>`).join("")}
+      </div>
+    `);
+    if(deToFr) speak(it.de);
+  }else{
+    ex.correct = it.de;
+    render(`${head}
+      <div class="card flashcard" style="min-height:130px">
+        <div class="dir">Écris en allemand</div>
+        <div class="word" style="font-size:1.3rem">${esc(it.fr)}</div>
+      </div>
+      <input class="answer" id="ex-input" autocomplete="off" autocapitalize="off" spellcheck="false"
+             placeholder="Tape ta réponse en allemand…" onkeydown="if(event.key==='Enter')answerWrite()">
+      <div class="umlauts">
+        ${["ä","ö","ü","ß"].map(c => `<button onclick="insertChar('${c}')">${c}</button>`).join("")}
+      </div>
+      <button class="btn block" style="margin-top:12px" onclick="answerWrite()">Valider</button>
+      <div id="ex-feedback"></div>
+    `);
+    document.getElementById("ex-input").focus();
+  }
+}
+function insertChar(c){
+  const inp = document.getElementById("ex-input");
+  inp.value += c; inp.focus();
+}
+function answerQCM(btn){
+  const good = btn.textContent === ex.correct;
+  document.querySelectorAll(".choices button").forEach(b => {
+    b.disabled = true;
+    if(b.textContent === ex.correct) b.classList.add("correct");
+    else if(b === btn) b.classList.add("wrong");
+  });
+  if(good){ ex.score++; addXP(10); } else addXP(1);
+  setTimeout(nextEx, good ? 800 : 1800);
+}
+function answerWrite(){
+  const inp = document.getElementById("ex-input");
+  if(inp.disabled) return;
+  const good = normDE(inp.value) === normDE(ex.correct);
+  inp.disabled = true;
+  document.getElementById("ex-feedback").innerHTML = good
+    ? `<div class="feedback ok">✅ Richtig ! ${esc(ex.correct)}</div>`
+    : `<div class="feedback bad">❌ La bonne réponse : <b>${esc(ex.correct)}</b></div>`;
+  speak(ex.correct);
+  if(good){ ex.score++; addXP(10); } else addXP(1);
+  setTimeout(nextEx, good ? 1000 : 2200);
+}
+function nextEx(){
+  ex.i++;
+  if(ex.i < ex.pool.length){ renderExQuestion(); return; }
+  const pct = Math.round(ex.score/ex.pool.length*100);
+  render(`
+    <div class="card bigscore">
+      <div class="emoji">${pct >= 80 ? "🏆" : pct >= 50 ? "👍" : "📖"}</div>
+      <h2>Exercice terminé</h2>
+      <div class="score">${ex.score} / ${ex.pool.length}</div>
+      <p class="muted">${pct >= 80 ? "Ausgezeichnet ! (Excellent !)" : pct >= 50 ? "Gut gemacht ! Continue comme ça." : "Pas grave — la répétition fera le reste."}</p>
+      <button class="btn block" style="margin-top:10px" onclick="startEx('${ex.mode}')">🔄 Rejouer</button>
+      <button class="btn secondary block" style="margin-top:8px" onclick="renderPractice()">✏️ Autres exercices</button>
+    </div>
+  `);
+}
+
+/* ================= DÉMARRAGE ================= */
+renderHeader();
+showTab("home");
+</script>
+</body>
+</html>
