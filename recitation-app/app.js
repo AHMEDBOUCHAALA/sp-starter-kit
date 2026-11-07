@@ -359,11 +359,16 @@
 
   if (!SR) {
     $('#unsupported').classList.remove('hidden');
-    $('#btn-mic').disabled = true;
   }
 
   function startMic() {
-    if (!SR || engine.done) return;
+    if (!SR) {
+      showMicError(
+        "Ce navigateur ne propose pas la reconnaissance vocale. Ouvre la page dans Chrome (Android) ou Safari (iPhone). En attendant, tu peux taper les mots dans le champ du bas."
+      );
+      return;
+    }
+    if (engine.done) return;
     recog = new SR();
     recog.lang = $('#lang').value;
     recog.continuous = true;
@@ -372,10 +377,18 @@
     consumed = {};
     recog.onresult = onResult;
     recog.onerror = (e) => {
-      if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
-        $('#heard').textContent = "Accès au micro refusé. Autorise-le dans la barre d'adresse.";
-        stopMic();
-      }
+      if (e.error === 'no-speech' || e.error === 'aborted') return; // silence : on relance
+      const framed = window.top !== window.self;
+      const messages = {
+        'not-allowed': framed
+          ? "Micro bloqué : cette page est affichée dans un cadre qui n'a pas le droit d'utiliser le micro. Ouvre l'app depuis son adresse GitHub Pages."
+          : "Accès au micro refusé. Autorise-le dans les réglages du navigateur pour ce site.",
+        'service-not-allowed': "La reconnaissance vocale n'est pas autorisée ici. Essaie Chrome (Android) ou Safari (iPhone), hors de l'app Claude.",
+        'audio-capture': "Aucun micro trouvé, ou il est déjà utilisé par une autre app.",
+        network: "La reconnaissance vocale a besoin d'internet (elle passe par les serveurs du navigateur).",
+        'language-not-supported': "Cette langue n'est pas prise en charge par la reconnaissance vocale de ce navigateur.",
+      };
+      showMicError(messages[e.error] || 'Erreur du micro : ' + e.error);
     };
     // Chrome coupe l'écoute après un silence : on relance tant que l'utilisateur n'a pas arrêté.
     recog.onend = () => {
@@ -390,16 +403,27 @@
     };
     try {
       recog.start();
-    } catch {
+    } catch (err) {
+      showMicError("Impossible de démarrer le micro : " + err.message);
       return;
     }
+    $('#heard').textContent = 'Écoute en cours... commence à réciter.';
     listening = true;
     $('#btn-mic').classList.add('on');
     $('#btn-mic').setAttribute('aria-pressed', 'true');
     $('#mic-label').textContent = 'Stop';
   }
 
+  function showMicError(msg) {
+    stopMic();
+    const el = $('#heard');
+    el.textContent = msg;
+    el.classList.add('error-msg');
+    el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
+
   function stopMic() {
+    $('#heard').classList.remove('error-msg');
     listening = false;
     if (recog) recog.stop();
     $('#btn-mic').classList.remove('on');

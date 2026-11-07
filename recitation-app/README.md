@@ -34,7 +34,15 @@ python3 -m http.server 8000
 # puis ouvrir http://localhost:8000 dans Chrome ou Edge
 ```
 
-Pour la mettre en ligne : GitHub Pages, Netlify ou Vercel, en publiant le dossier `recitation-app` tel quel.
+Pour l'utiliser sur téléphone, il faut une adresse `https://`. Avec GitHub Pages (gratuit, dépôt public) :
+
+1. Sur GitHub : **Settings > Pages**.
+2. *Source* : **Deploy from a branch**, choisir la branche qui contient l'app et le dossier **/ (root)**, puis **Save**.
+3. Après une à deux minutes, l'app est en ligne sur `https://<compte>.github.io/sp-starter-kit/recitation-app/`.
+
+Le fichier `.nojekyll` à la racine du dépôt demande à GitHub de servir les fichiers tels quels.
+
+Remarque : dans une page Artifact claude.ai, ou dans le navigateur intégré d'une autre app, le micro est souvent bloqué. Ouvre l'adresse dans Chrome (Android) ou Safari (iPhone).
 
 Tests du moteur d'alignement : `node tests/engine.test.js`
 
