@@ -31,7 +31,7 @@
     let bad = 0;
     for (const t of tokens) {
       const bare = t.replace(MARKS, '').replace(/[^\p{L}\p{N}]/gu, '');
-      if (t.includes('�')) bad++;
+      if (t.includes('\uFFFD')) bad++;
       else if (bare.length === 0 && /[ً-ْ]/.test(t)) bad++; // voyelles seules
       else if (bare.length === 1 && LETTER.test(bare) && !/^[وبلفكأإآاءy]$/i.test(bare)) bad++;
     }
