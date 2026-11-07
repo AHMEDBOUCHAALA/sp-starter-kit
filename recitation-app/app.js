@@ -251,6 +251,12 @@
         onChange: (i, state) => {
           spans[i].className = 'w ' + state;
         },
+        onReplay: (i) => {
+          const s = spans[i];
+          s.classList.remove('echo');
+          void s.offsetWidth; // relance l'animation
+          s.classList.add('echo');
+        },
         onMistake: (i) => {
           spans[i].classList.add('shake');
           if ($('#sound').checked) beep();
@@ -287,6 +293,7 @@
     $('#st-error').textContent = st.error;
     $('#st-skipped').textContent = st.skipped;
     $('#st-hint').textContent = st.hint;
+    $('#st-back').textContent = st.backtracks;
     $('#st-accuracy').textContent = st.accuracy == null ? '-' : st.accuracy + ' %';
     $('#progress-bar').style.width = st.progress + '%';
     if (engine.done && st.total) finish(st);

@@ -12,7 +12,8 @@ Tu actives le micro et tu récites. Les mots apparaissent au fur et à mesure, e
 | Alerte immédiate (vibration ou son) | Oui : petit son et animation à chaque faute (désactivable) |
 | Suivi de lecture : le texte reste visible, le mot courant est suivi | Oui : mode "Lecture" |
 | Indice / jeter un œil sur le texte | Oui : bouton "Indice" (révèle le mot suivant) et "Voir" (maintenir) |
-| Statistiques de session | Oui : justes, fautes, oublis, indices, précision, meilleur score |
+| Statistiques de session | Oui : justes, fautes, oublis, indices, retours en arrière, précision, meilleur score |
+| Revenir quelques mots ou un verset en arrière pour se rappeler la suite, sans faute | Oui : retours détectés et affichés en bleu |
 | Écouter un récitateur | Oui : lien YouTube affiché dans l'app |
 | Modèle de reconnaissance entraîné spécifiquement sur la récitation coranique | Non : on utilise la reconnaissance vocale générale du navigateur (voir les limites) |
 
@@ -53,6 +54,7 @@ Tests du moteur d'alignement : `node tests/engine.test.js`
   - mot attendu reconnu : **juste** ;
   - mot reconnu qui correspond à un mot plus loin : les mots entre les deux sont **oubliés** (ou **fautes** si un autre mot a été dit à leur place) ;
   - mot inconnu isolé ("euh") : ignoré ; deux mots inconnus de suite : **faute** sur le mot attendu ;
+  - **retour en arrière** : si tu redis des mots déjà récités (quelques mots ou un vers entier, jusqu'à 80 mots en arrière) pour te remémorer la suite, l'app les suit sans compter de faute, les fait clignoter en bleu, puis reprend quand tu retrouves le mot où tu t'étais arrêté. Un mot mal compris par le micro pendant ce retour est toléré. Un mot faux à la place du mot attendu reste une faute ;
   - gère les mots coupés ou collés par le micro ("quatre vingt" / "quatre-vingt").
 - `app.js` : interface, micro (Web Speech API en continu, relancée automatiquement après un silence), saisie clavier de secours, bibliothèque, YouTube.
 

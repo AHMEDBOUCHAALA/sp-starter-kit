@@ -70,11 +70,13 @@
 
   const LOOKAHEAD = 4; // nombre de mots qu'on accepte de "sauter"
   const MAX_PENDING = 2; // mots non reconnus avant de déclarer une faute
+  const LOOKBEHIND = 80; // jusqu'où on reconnaît un retour en arrière (en mots)
 
   class RecitationEngine {
     /**
      * @param {string[]} words  mots attendus (forme affichée)
-     * @param {object}   opts   { strictness, onChange(index, state), onMistake(index, kind, spoken) }
+     * @param {object}   opts   { strictness, onChange(index, state), onMistake(index, kind, spoken),
+     *                            onReplay(index) : mot redit lors d'un retour en arrière }
      */
     constructor(words, opts = {}) {
       this.words = words;
@@ -83,6 +85,9 @@
       this.strictness = opts.strictness || 'normal';
       this.onChange = opts.onChange || (() => {});
       this.onMistake = opts.onMistake || (() => {});
+      this.onReplay = opts.onReplay || (() => {});
+      this.replay = []; // positions possibles du prochain mot pendant un retour en arrière
+      this.backtracks = 0;
       this.pending = [];
       this.cursor = 0;
       this.end = words.length;
@@ -100,6 +105,8 @@
       this.cursor = start;
       this.pending = [];
       this.history = [];
+      this.replay = [];
+      this.backtracks = 0;
       this._skipPunct();
     }
 
@@ -118,6 +125,7 @@
       const done = c.correct + c.error + c.skipped + c.hint;
       c.accuracy = done ? Math.round((c.correct / done) * 100) : null;
       c.progress = c.total ? Math.round((done / c.total) * 100) : 0;
+      c.backtracks = this.backtracks;
       return c;
     }
 
@@ -153,6 +161,22 @@
         return true;
       }
 
+      // 4a. Retour en arrière en cours : le mot continue-t-il le passage redit ?
+      let staleReplay = [];
+      if (this.replay.length) {
+        const matches = this.replay.filter((c) => c < i && similar(w, this.norm[c], this.strictness));
+        if (matches.length) {
+          if (this.pending.length) this.backtracks++; // 2e mot : le retour est confirmé
+          this.pending = [];
+          this.replay = matches.map((c) => this._nextWord(c));
+          this.replayMiss = false;
+          this.onReplay(matches[matches.length - 1]);
+          return false;
+        }
+        staleReplay = this.replay;
+        this.replay = [];
+      }
+
       // 4. Le mot correspond à un mot plus loin : on a sauté ou remplacé des mots.
       let j = i;
       for (let step = 1; step <= LOOKAHEAD; step++) {
@@ -172,6 +196,29 @@
           this._mark(j, 'correct');
           return true;
         }
+      }
+
+      // 4b. Le mot correspond à un passage déjà récité : peut-être un retour en
+      //     arrière pour se remémorer la suite. Tant qu'il n'est pas confirmé par
+      //     le mot suivant, il reste "en attente" comme un mot inconnu.
+      // Un seul mot mal compris par le micro pendant un retour est toléré.
+      if (staleReplay.length && !this.replayMiss) {
+        this.replayMiss = true;
+        this.replay = staleReplay.map((c) => this._nextWord(c)).filter((c) => c <= i);
+        this.pending.push({ raw: rawWord, norm: w });
+        return false;
+      }
+
+      const behind = [];
+      for (let k = i - 1; k >= Math.max(0, i - LOOKBEHIND); k--) {
+        if (this.norm[k] && similar(w, this.norm[k], this.strictness)) behind.push(k);
+      }
+      if (behind.length) {
+        this.replay = behind.map((k) => this._nextWord(k));
+        this.replayMiss = false;
+        this.pending.push({ raw: rawWord, norm: w });
+        this.onReplay(behind[0]);
+        return false;
       }
 
       // 5. Pas de correspondance : on attend un peu avant de trancher,
@@ -195,6 +242,7 @@
     hint() {
       if (this.done) return;
       this.pending = [];
+      this.replay = [];
       this._mark(this.cursor, 'hint');
     }
 
@@ -207,6 +255,7 @@
       }
       this.cursor = last;
       this.pending = [];
+      this.replay = [];
     }
 
     _nextWord(i) {
@@ -216,6 +265,7 @@
     }
 
     _mark(i, state) {
+      this.replay = [];
       this.history.push(this.cursor);
       this._set(i, state);
       this.cursor = Math.max(this.cursor, i + 1);

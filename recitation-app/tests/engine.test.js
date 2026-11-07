@@ -73,6 +73,38 @@ test('ponctuation seule sautée', () => {
   assert.deepStrictEqual(e.states, ['correct', 'punct', 'correct']);
 });
 
+test('retour en arrière de quelques mots : pas de faute', () => {
+  const e = run('le savoir est une lumière que Dieu place dans le cœur',
+    'le savoir est une lumière est une lumière que Dieu place');
+  assert.ok(e.states.slice(0, 8).every((s) => s === 'correct'), e.states.join());
+  assert.strictEqual(e.cursor, 8);
+  assert.strictEqual(e.backtracks, 1);
+});
+test("retour au début d'un vers précédent", () => {
+  const text = 'يقول عبد الواحد بن عاشر\nمبتدئا باسم الاله القادر\nالحمد لله الذي علمنا';
+  const e = run(text,
+    'يقول عبد الواحد بن عاشر مبتدئا باسم الاله القادر ' +
+    'يقول عبد الواحد بن عاشر مبتدئا باسم الاله القادر الحمد لله');
+  const recited = e.states.slice(0, 11);
+  assert.ok(recited.every((s) => s === 'correct'), e.states.join());
+  assert.strictEqual(e.stats().error, 0);
+});
+test('retour en arrière puis vraie faute : la faute est détectée', () => {
+  const e = run('le savoir est une grande lumière', 'le savoir est une savoir est une petite lumière');
+  assert.strictEqual(e.states[4], 'error');
+  assert.strictEqual(e.states[5], 'correct');
+});
+test('mot faux qui existe plus haut, puis mot suivant juste : faute', () => {
+  const e = run('le savoir est une grande lumière', 'le savoir est une savoir lumière');
+  assert.strictEqual(e.states[4], 'error');
+});
+test('mot du micro mal compris pendant un retour : pas de faute', () => {
+  const e = run('le savoir est une lumière que Dieu place dans le cœur',
+    'le savoir est une lumière que Dieu savoir xyz une lumière que Dieu place');
+  assert.strictEqual(e.stats().error, 0, e.states.join());
+  assert.strictEqual(e.cursor, 8);
+});
+
 let fail = 0;
 for (const [name, fn] of cases) {
   try { fn(); console.log('ok   ', name); }

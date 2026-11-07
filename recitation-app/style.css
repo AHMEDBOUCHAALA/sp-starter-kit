@@ -1,4 +1,6 @@
 :root {
+  --echo: #2563eb;
+  --echo-bg: #dbeafe;
   --bg: #f6f4ef;
   --card: #ffffff;
   --ink: #1f2328;
@@ -34,6 +36,8 @@
     --hint-bg: #3a320c;
     --ctx: #5b616b;
     --slot: #3a3f48;
+    --echo: #60a5fa;
+    --echo-bg: #172554;
   }
 }
 
@@ -164,3 +168,11 @@ dialog::backdrop { background: rgb(0 0 0 / .4); }
   .controls button { padding: 8px 10px; }
 }
 .heard.error-msg { color: var(--err); background: var(--err-bg); border-radius: 10px; padding: 10px 14px; font-size: 15px; }
+
+/* Mot redit pendant un retour en arrière : simple rappel visuel, pas une faute */
+.w.echo { animation: echo 1.2s ease-out; }
+@keyframes echo {
+  0%, 40% { background: var(--echo-bg); color: var(--echo); }
+  100% { background: transparent; }
+}
+.c-back b { color: var(--echo); }
