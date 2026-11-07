@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hifz - Récitation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>Hifz <span>récite, le texte apparaît</span></h1>
+    <button id="btn-library" class="ghost">Mes textes</button>
+  </header>
+
+  <!-- Étape 1 : choisir un texte -->
+  <section id="view-import" class="view">
+    <div class="card">
+      <h2>1. Ajoute ton texte</h2>
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="pdf" role="tab">PDF</button>
+        <button class="tab" data-tab="paste" role="tab">Coller un texte</button>
+      </div>
+
+      <div class="tab-panel" data-panel="pdf">
+        <label class="drop" id="drop">
+          <input type="file" id="file-pdf" accept="application/pdf">
+          <strong>Choisir un PDF</strong> ou le glisser ici
+          <small>Le fichier reste sur ton appareil, rien n'est envoyé.</small>
+        </label>
+        <p id="pdf-status" class="status"></p>
+      </div>
+
+      <div class="tab-panel hidden" data-panel="paste">
+        <input id="paste-title" type="text" placeholder="Titre (ex. Al-Murshid al-Mu'in)">
+        <textarea id="paste-text" rows="10" placeholder="Colle ici le texte à mémoriser. Un vers ou une phrase par ligne, c'est idéal."></textarea>
+        <button id="btn-paste" class="primary">Utiliser ce texte</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Étape 2 : vérifier les pages -->
+  <section id="view-pages" class="view hidden">
+    <div class="card">
+      <h2>2. Vérifie le texte extrait</h2>
+      <p class="hint">Décoche les pages inutiles (couverture, sommaire). Les pages marquées <span class="badge bad">illisible</span> ont un texte que l'ordinateur ne sait pas lire : remplace-le en collant la bonne version.</p>
+      <div id="page-list"></div>
+      <div class="actions">
+        <button id="btn-pages-back" class="ghost">Retour</button>
+        <button id="btn-pages-ok" class="primary">Commencer</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Étape 3 : réciter -->
+  <section id="view-recite" class="view hidden">
+    <div class="toolbar card">
+      <div class="row">
+        <strong id="doc-title"></strong>
+        <span class="spacer"></span>
+        <label>Langue
+          <select id="lang">
+            <option value="ar-SA">Arabe</option>
+            <option value="ar-MA">Arabe (Maroc)</option>
+            <option value="fr-FR">Français</option>
+            <option value="en-US">Anglais</option>
+            <option value="es-ES">Espagnol</option>
+          </select>
+        </label>
+        <label>Mode
+          <select id="mode">
+            <option value="memorize">Mémorisation (texte caché)</option>
+            <option value="read">Lecture (texte visible)</option>
+          </select>
+        </label>
+        <label>Exigence
+          <select id="strictness">
+            <option value="tolerant">Tolérante</option>
+            <option value="normal" selected>Normale</option>
+            <option value="strict">Stricte</option>
+          </select>
+        </label>
+        <label class="check"><input type="checkbox" id="sound" checked> Son en cas de faute</label>
+      </div>
+      <div class="row">
+        <label>Vidéo / audio YouTube
+          <input id="yt-url" type="url" placeholder="https://www.youtube.com/watch?v=...">
+        </label>
+        <button id="btn-yt" class="ghost">Afficher</button>
+      </div>
+      <div id="yt-box" class="hidden"></div>
+    </div>
+
+    <div class="stats card">
+      <div class="progress"><div id="progress-bar"></div></div>
+      <div class="stat-row">
+        <span><b id="st-correct">0</b> justes</span>
+        <span class="c-error"><b id="st-error">0</b> fautes</span>
+        <span class="c-skipped"><b id="st-skipped">0</b> oubliés</span>
+        <span class="c-hint"><b id="st-hint">0</b> indices</span>
+        <span><b id="st-accuracy">-</b> précision</span>
+      </div>
+    </div>
+
+    <p id="unsupported" class="status bad hidden">Ton navigateur ne propose pas la reconnaissance vocale. Utilise Chrome ou Edge, ou tape les mots dans le champ en bas.</p>
+
+    <article id="text" class="text card" aria-live="polite"></article>
+    <p class="hint">Astuce : clique sur un mot pour commencer la récitation à partir de lui.</p>
+
+    <div id="heard" class="heard"></div>
+
+    <footer class="controls">
+      <button id="btn-undo" class="ghost" title="Annuler le dernier mot">Annuler</button>
+      <button id="btn-hint" class="ghost" title="Révéler le mot suivant">Indice</button>
+      <button id="btn-mic" class="mic" aria-pressed="false">
+        <span class="mic-dot"></span><span id="mic-label">Réciter</span>
+      </button>
+      <button id="btn-peek" class="ghost" title="Maintenir pour voir le texte">Voir</button>
+      <button id="btn-restart" class="ghost">Recommencer</button>
+      <input id="type-input" type="text" placeholder="ou tape les mots ici, puis Entrée" autocomplete="off">
+    </footer>
+  </section>
+
+  <!-- Bibliothèque -->
+  <dialog id="library">
+    <h2>Mes textes</h2>
+    <ul id="library-list"></ul>
+    <div class="actions">
+      <button id="btn-new" class="primary">Nouveau texte</button>
+      <button id="btn-library-close" class="ghost">Fermer</button>
+    </div>
+  </dialog>
+
+  <script src="lib/pdf.min.js"></script>
+  <script src="engine.js"></script>
+  <script src="pdf-text.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
